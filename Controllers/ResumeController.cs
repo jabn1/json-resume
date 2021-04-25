@@ -727,6 +727,36 @@ namespace JSON_Resume.Controllers
             return Ok();
         }
 
+        [HttpDelete]
+        public IActionResult Delete()
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(ResumeController.resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(ResumeController.resume.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume = null;
+            return Ok();
+        }
+
         [HttpPut("basics")]
         public IActionResult PutBasic([FromBody] Basics item)
         {
@@ -859,6 +889,42 @@ namespace JSON_Resume.Controllers
             return Ok();
         }
 
+        [HttpDelete("basics/profiles/{key}")]
+        public IActionResult DeleteBasicsProfiles(string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var profile = resume.Basics.Profiles.FirstOrDefault(x => x.Network == key);
+            
+            if(profile == null) return NotFound();
+            var position = resume.Basics.Profiles.IndexOf(profile);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(profile.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Profiles.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Profiles.Remove(profile);
+            return Ok();
+        }
+
         [HttpPut("work")]
         public IActionResult PutWork([FromBody] ResumeList<Work> items)
         {
@@ -925,6 +991,40 @@ namespace JSON_Resume.Controllers
             resume.Work.Etag = Guid.NewGuid().ToString();
 
             resume.Work[position] = item;
+            return Ok();
+        }
+
+        [HttpDelete("work/{key}")]
+        public IActionResult DeleteWorkByKey(string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Work.FirstOrDefault(x => x.Company == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Work.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Work.Etag = Guid.NewGuid().ToString();
+            resume.Work.Remove(oldItem);
             return Ok();
         }
         
@@ -997,6 +1097,42 @@ namespace JSON_Resume.Controllers
             resume.Volunteer[position] = item;
             return Ok();
         }
+
+        [HttpDelete("volunteer/{key}")]
+        public IActionResult DeleteVolunteerByKey( string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Volunteer.FirstOrDefault(x => x.Organization == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Volunteer.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Volunteer.Etag = Guid.NewGuid().ToString();
+            resume.Volunteer.Remove(oldItem);
+
+            return Ok();
+        }
         
         [HttpPut("education")]
         public IActionResult PutEducation([FromBody] ResumeList<Education> items)
@@ -1064,6 +1200,42 @@ namespace JSON_Resume.Controllers
             resume.Education.Etag = Guid.NewGuid().ToString();
 
             resume.Education[position] = item;
+            return Ok();
+        }
+
+        [HttpDelete("education/{key}")]
+        public IActionResult DeleteEducationByKey(string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Education.FirstOrDefault(x => x.StudyType == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Education.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Education.Etag = Guid.NewGuid().ToString();
+
+            resume.Education.Remove(oldItem);
             return Ok();
         }
 
@@ -1136,6 +1308,42 @@ namespace JSON_Resume.Controllers
             return Ok();
         }
 
+        [HttpDelete("awards/{key}")]
+        public IActionResult DeleteAwardsByKey( string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Awards.FirstOrDefault(x => x.Title == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Awards.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Awards.Etag = Guid.NewGuid().ToString();
+
+            resume.Awards.Remove(oldItem);
+            return Ok();
+        }
+
         [HttpPut("publication")]
         public IActionResult PutPublications([FromBody] ResumeList<Publication> items)
         {
@@ -1202,6 +1410,42 @@ namespace JSON_Resume.Controllers
             resume.Publications.Etag = Guid.NewGuid().ToString();
 
             resume.Publications[position] = item;
+            return Ok();
+        }
+
+        [HttpDelete("publications/{key}")]
+        public IActionResult DeletePublicationsByKey( string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Publications.FirstOrDefault(x => x.Name == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Publications.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Publications.Etag = Guid.NewGuid().ToString();
+
+            resume.Publications.Remove(oldItem);
             return Ok();
         }
 
@@ -1274,6 +1518,42 @@ namespace JSON_Resume.Controllers
             return Ok();
         }
 
+        [HttpDelete("skills/{key}")]
+        public IActionResult DeleteSkillsByKey(string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Skills.FirstOrDefault(x => x.Name == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Skills.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Skills.Etag = Guid.NewGuid().ToString();
+
+            resume.Skills.Remove(oldItem);
+            return Ok();
+        }
+
         [HttpPut("languages")]
         public IActionResult PutLanguages([FromBody] ResumeList<Languages> items)
         {
@@ -1340,6 +1620,42 @@ namespace JSON_Resume.Controllers
             resume.Languages.Etag = Guid.NewGuid().ToString();
 
             resume.Languages[position] = item;
+            return Ok();
+        }
+
+        [HttpDelete("languages/{key}")]
+        public IActionResult DeleteLanguagesByKey( string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Languages.FirstOrDefault(x => x.Language == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Languages.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Languages.Etag = Guid.NewGuid().ToString();
+
+            resume.Languages.Remove(oldItem);
             return Ok();
         }
 
@@ -1412,6 +1728,42 @@ namespace JSON_Resume.Controllers
             return Ok();
         }
 
+        [HttpDelete("interests/{key}")]
+        public IActionResult DeleteInterestsByKey(string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Interests.FirstOrDefault(x => x.Name == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Interests.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Interests.Etag = Guid.NewGuid().ToString();
+
+            resume.Interests.Remove(oldItem);
+            return Ok();
+        }
+
         [HttpPut("references")]
         public IActionResult PutReferences([FromBody] ResumeList<References> items)
         {
@@ -1480,6 +1832,43 @@ namespace JSON_Resume.Controllers
             resume.References[position] = item;
             return Ok();
         }
+
+        [HttpDelete("references/{key}")]
+        public IActionResult DeleteReferencesByKey( string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.References.FirstOrDefault(x => x.Name == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.References.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.References.Etag = Guid.NewGuid().ToString();
+
+            resume.References.Remove(oldItem);
+            return Ok();
+        }
+
 
         private bool Authenticate(string authorization, string username, string password)
         {
