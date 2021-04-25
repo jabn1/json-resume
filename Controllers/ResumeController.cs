@@ -69,6 +69,25 @@ namespace JSON_Resume.Controllers
             HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Basics?.Profiles);
         }
+        [HttpGet("basics/profiles/{key}"),HttpHead("basics/profiles/{key}")]
+        public IActionResult GetBasicsProfilesByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var profile = resume.Basics.Profiles.FirstOrDefault(x => x.Network == key);
+            if(profile != null){
+                HttpContext.Response.Headers.Add("etag",profile.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(profile.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(profile);
+        }
 
         [HttpGet("basics/location"),HttpHead("basics/profiles")]
         public IActionResult GetBasicsLocation()
@@ -621,6 +640,42 @@ namespace JSON_Resume.Controllers
             resume.Etag = Guid.NewGuid().ToString();
             resume.Basics.Etag = Guid.NewGuid().ToString();
             resume.Basics.Profiles = items;
+            return Ok();
+        }
+        [HttpPut("basics/profiles/{key}")]
+        public IActionResult PutBasicsProfiles([FromBody] Profile item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var profile = resume.Basics.Profiles.FirstOrDefault(x => x.Network == key);
+            
+            if(profile == null) return NotFound();
+            var position = resume.Basics.Profiles.IndexOf(profile);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(profile.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.Network = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Profiles.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Profiles[position] = item;
             return Ok();
         }
 
