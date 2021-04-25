@@ -250,6 +250,30 @@ namespace JSON_Resume.Controllers
             ResumeController.resume = resume;
             return Created("/resume",null);
         }
+        [HttpPost("basics/profiles")]
+        public IActionResult PostBasicsProfile([FromBody] Profile profile)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+            if(resume == null){
+                return NotFound();
+            }
+            if(resume.Basics.Profiles.Any(w => w.Network == profile.Network)){
+                return Conflict();
+            }
+
+            resume.Basics.Profiles.Add(profile);
+            return Created($"/resume/basics/profiles/{profile.Network}",null);
+        }
 
         [HttpPost("work")]
         public IActionResult PostWork([FromBody] Work work)
