@@ -246,7 +246,7 @@ namespace JSON_Resume.Controllers
             }
 
             if(ResumeController.resume != null ) return Conflict();
-
+            HttpContext.Response.Headers.Add("etag",resume.Etag);
             ResumeController.resume = resume;
             return Created("/resume",null);
         }
@@ -270,7 +270,7 @@ namespace JSON_Resume.Controllers
             if(resume.Basics.Profiles.Any(w => w.Network == profile.Network)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",profile.Etag);
             resume.Basics.Profiles.Add(profile);
             return Created($"/resume/basics/profiles/{profile.Network}",null);
         }
@@ -295,7 +295,7 @@ namespace JSON_Resume.Controllers
             if(resume.Work.Any(w => w.Company == work.Company)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",work.Etag);
             resume.Work.Add(work);
             return Created($"/resume/work/{work.Company}",null);
         }
@@ -322,7 +322,7 @@ namespace JSON_Resume.Controllers
             if(resume.Volunteer.Any(v => v.Organization == volunteer.Organization)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",volunteer.Etag);
             resume.Volunteer.Add(volunteer);
             return Created($"/resume/work/{volunteer.Organization}",null);
         }
@@ -347,7 +347,7 @@ namespace JSON_Resume.Controllers
             if(resume.Education.Any(x => x.Institution == education.Institution)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",education.Etag);
             resume.Education.Add(education);
             return Created($"/resume/education/{education.Institution}",null);
         }
@@ -372,7 +372,7 @@ namespace JSON_Resume.Controllers
             if(resume.Awards.Any(x => x.Title == award.Title)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",award.Etag);
             resume.Awards.Add(award);
             return Created($"/resume/education/{award.Title}",null);
         }
@@ -396,7 +396,7 @@ namespace JSON_Resume.Controllers
             if(resume.Publications.Any(x => x.Name == item.Name)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",item.Etag);
             resume.Publications.Add(item);
             return Created($"/resume/publications/{item.Name}",null);
         }
@@ -420,7 +420,7 @@ namespace JSON_Resume.Controllers
             if(resume.Skills.Any(x => x.Name == item.Name)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",item.Etag);
             resume.Skills.Add(item);
             return Created($"/resume/skills/{item.Name}",null);
         }
@@ -445,7 +445,7 @@ namespace JSON_Resume.Controllers
             if(resume.Languages.Any(x => x.Language == item.Language)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",item.Etag);
             resume.Languages.Add(item);
             return Created($"/resume/languages/{item.Language}",null);
         }
@@ -469,7 +469,7 @@ namespace JSON_Resume.Controllers
             if(resume.Interests.Any(x => x.Name == item.Name)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",item.Etag);
             resume.Interests.Add(item);
             return Created($"/resume/interests/{item.Name}",null);
         }
@@ -493,7 +493,7 @@ namespace JSON_Resume.Controllers
             if(resume.References.Any(x => x.Name == item.Name)){
                 return Conflict();
             }
-
+            HttpContext.Response.Headers.Add("etag",item.Etag);
             resume.References.Add(item);
             return Created($"/resume/references/{item.Name}",null);
         }
