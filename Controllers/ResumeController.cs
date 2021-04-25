@@ -235,6 +235,32 @@ namespace JSON_Resume.Controllers
             return Created("/resume",null);
         }
 
+        [HttpPost("work")]
+        public IActionResult PostWork([FromBody] Work work)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+            if(resume == null){
+                return NotFound();
+            }
+            if(resume.Work.Any(w => w.Company == work.Company)){
+                return Conflict();
+            }
+
+            resume.Work.Add(work);
+            return Created($"/resume/work/{work.Company}",null);
+        }
+
+
         private bool Authenticate(string authorization, string username, string password)
         {
             var content = authorization.Split(" ");
