@@ -15,7 +15,7 @@ namespace JSON_Resume.Controllers
     {
         private static Resume resume;
 
-        [HttpGet]
+        [HttpGet,HttpHead]
         public IActionResult Get()
         {
             if(resume != null){
@@ -29,7 +29,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume);
         }
 
-        [HttpGet("basics")]
+        [HttpGet("basics"),HttpHead("basics")]
         public IActionResult GetBasics()
         {
             if(resume?.Basics != null){
@@ -43,7 +43,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Basics);
         }
 
-        [HttpGet("basics/profiles")]
+        [HttpGet("basics/profiles"),HttpHead("basics/profiles")]
         public IActionResult GetBasicsProfiles()
         {
             if(resume?.Basics?.Profiles != null){
@@ -57,7 +57,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Basics?.Profiles);
         }
 
-        [HttpGet("work")]
+        [HttpGet("work"),HttpHead("work")]
         public IActionResult GetWork()
         {
             if(resume?.Work != null){
@@ -71,7 +71,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Work);
         }
 
-        [HttpGet("volunteer")]
+        [HttpGet("volunteer"),HttpHead("volunteer")]
         public IActionResult GetVolunteer()
         {
             if(resume?.Volunteer != null){
@@ -85,7 +85,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Volunteer);
         }
 
-        [HttpGet("education")]
+        [HttpGet("education"),HttpHead("education")]
         public IActionResult GetEducation()
         {
             if(resume?.Education != null){
@@ -99,7 +99,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Education);
         }
 
-        [HttpGet("awards")]
+        [HttpGet("awards"),HttpHead("awards")]
         public IActionResult GetAwards()
         {
             if(resume?.Awards != null){
@@ -113,7 +113,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Awards);
         }
 
-        [HttpGet("publications")]
+        [HttpGet("publications"),HttpHead("publications")]
         public IActionResult GetPublications()
         {
             if(resume?.Publications != null){
@@ -127,7 +127,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Publications);
         }
 
-        [HttpGet("skills")]
+        [HttpGet("skills"),HttpHead("skills")]
         public IActionResult GetSkills()
         {
             if(resume?.Skills != null){
@@ -141,7 +141,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Skills);
         }
 
-        [HttpGet("languages")]
+        [HttpGet("languages"),HttpHead("languages")]
         public IActionResult GetLanguages()
         {
             if(resume?.Languages != null){
@@ -155,7 +155,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Languages);
         }
 
-        [HttpGet("interests")]
+        [HttpGet("interests"),HttpHead("interests")]
         public IActionResult GetInterests()
         {
             if(resume?.Interests != null){
@@ -169,7 +169,7 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Interests);
         }
 
-        [HttpGet("references")]
+        [HttpGet("references"),HttpHead("references")]
         public IActionResult GetReferences()
         {
             if(resume?.References != null){
