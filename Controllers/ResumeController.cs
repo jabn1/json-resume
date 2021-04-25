@@ -198,7 +198,7 @@ namespace JSON_Resume.Controllers
         public IActionResult GetEducationByKey(string key)
         {
             if(resume == null) return NotFound();
-            var item = resume.Education.FirstOrDefault(x => x.Institution == key);
+            var item = resume.Education.FirstOrDefault(x => x.StudyType == key);
             if(item != null){
                 HttpContext.Response.Headers.Add("etag",item.Etag);
             }
@@ -1029,6 +1029,44 @@ namespace JSON_Resume.Controllers
             resume.Education = items;
             return Ok();
         }
+
+        [HttpPut("education/{key}")]
+        public IActionResult PutEducationByKey([FromBody] Education item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Education.FirstOrDefault(x => x.StudyType == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Education.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.StudyType = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Education.Etag = Guid.NewGuid().ToString();
+
+            resume.Education[position] = item;
+            return Ok();
+        }
+
         [HttpPut("awards")]
         public IActionResult PutAwards([FromBody] ResumeList<Award> items)
         {
@@ -1060,6 +1098,44 @@ namespace JSON_Resume.Controllers
             resume.Awards = items;
             return Ok();
         }
+
+        [HttpPut("awards/{key}")]
+        public IActionResult PutAwardsByKey([FromBody] Award item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Awards.FirstOrDefault(x => x.Title == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Awards.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.Title = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Awards.Etag = Guid.NewGuid().ToString();
+
+            resume.Awards[position] = item;
+            return Ok();
+        }
+
         [HttpPut("publication")]
         public IActionResult PutPublications([FromBody] ResumeList<Publication> items)
         {
@@ -1091,6 +1167,44 @@ namespace JSON_Resume.Controllers
             resume.Publications = items;
             return Ok();
         }
+
+        [HttpPut("publications/{key}")]
+        public IActionResult PutPublicationsByKey([FromBody] Publication item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Publications.FirstOrDefault(x => x.Name == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Publications.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.Name = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Publications.Etag = Guid.NewGuid().ToString();
+
+            resume.Publications[position] = item;
+            return Ok();
+        }
+
         [HttpPut("skills")]
         public IActionResult PutSkills([FromBody] ResumeList<Skill> items)
         {
@@ -1122,6 +1236,44 @@ namespace JSON_Resume.Controllers
             resume.Skills = items;
             return Ok();
         }
+
+        [HttpPut("skills/{key}")]
+        public IActionResult PutSkillsByKey([FromBody] Skill item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Skills.FirstOrDefault(x => x.Name == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Skills.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.Name = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Skills.Etag = Guid.NewGuid().ToString();
+
+            resume.Skills[position] = item;
+            return Ok();
+        }
+
         [HttpPut("languages")]
         public IActionResult PutLanguages([FromBody] ResumeList<Languages> items)
         {
@@ -1153,6 +1305,44 @@ namespace JSON_Resume.Controllers
             resume.Languages = items;
             return Ok();
         }
+
+        [HttpPut("languages/{key}")]
+        public IActionResult PutLanguagesByKey([FromBody] Languages item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Languages.FirstOrDefault(x => x.Language == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Languages.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.Language = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Languages.Etag = Guid.NewGuid().ToString();
+
+            resume.Languages[position] = item;
+            return Ok();
+        }
+
         [HttpPut("interests")]
         public IActionResult PutInterests([FromBody] ResumeList<Interest> items)
         {
@@ -1184,6 +1374,44 @@ namespace JSON_Resume.Controllers
             resume.Interests = items;
             return Ok();
         }
+
+        [HttpPut("interests/{key}")]
+        public IActionResult PutInterestsByKey([FromBody] Interest item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Interests.FirstOrDefault(x => x.Name == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Interests.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.Name = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Interests.Etag = Guid.NewGuid().ToString();
+
+            resume.Interests[position] = item;
+            return Ok();
+        }
+
         [HttpPut("references")]
         public IActionResult PutReferences([FromBody] ResumeList<References> items)
         {
@@ -1213,6 +1441,43 @@ namespace JSON_Resume.Controllers
             HttpContext.Response.Headers.Add("etag",items.Etag);
             resume.Etag = Guid.NewGuid().ToString();
             resume.References = items;
+            return Ok();
+        }
+
+        [HttpPut("references/{key}")]
+        public IActionResult PutReferencesByKey([FromBody] References item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.References.FirstOrDefault(x => x.Name == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.References.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.Name = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.References.Etag = Guid.NewGuid().ToString();
+
+            resume.References[position] = item;
             return Ok();
         }
 
