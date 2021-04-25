@@ -9,7 +9,6 @@ namespace JSON_Resume.Controllers
     public class Resume
     {
         public Basics Basics { get; set; }
-        public ResumeList<Profile> Profiles { get; set; } 
         public ResumeList<Work> Work { get; set; }
         public ResumeList<Volunteer> Volunteer { get; set; }
         public ResumeList<Education> Education { get; set; }
@@ -31,6 +30,7 @@ namespace JSON_Resume.Controllers
         public string Website { get; set; }
         public string Summary { get; set; }
         public ResumeList<Location> Locations { get; set; }
+        public ResumeList<Profile> Profiles { get; set; } 
         [JsonIgnore]
         public string Etag { get; set; }
     }
