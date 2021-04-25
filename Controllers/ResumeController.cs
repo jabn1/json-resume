@@ -25,6 +25,9 @@ namespace JSON_Resume.Controllers
             if(resume != null){
                 HttpContext.Response.Headers.Add("etag",resume.Etag);
             }
+            else{
+                return NotFound();
+            }
             if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
                 if(resume?.Etag == etag){
                     return StatusCode(304);
@@ -37,9 +40,11 @@ namespace JSON_Resume.Controllers
         [HttpGet("basics"),HttpHead("basics")]
         public IActionResult GetBasics()
         {
+            if(resume == null) return NotFound();
             if(resume?.Basics != null){
                 HttpContext.Response.Headers.Add("etag",resume.Basics.Etag);
             }
+            
             if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
                 if(resume?.Basics?.Etag == etag){
                     return StatusCode(304);
@@ -52,6 +57,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("basics/profiles"),HttpHead("basics/profiles")]
         public IActionResult GetBasicsProfiles()
         {
+            if(resume == null) return NotFound();
             if(resume?.Basics?.Profiles != null){
                 HttpContext.Response.Headers.Add("etag",resume.Basics.Profiles.Etag);
             }
@@ -67,6 +73,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("basics/location"),HttpHead("basics/profiles")]
         public IActionResult GetBasicsLocation()
         {
+            if(resume == null) return NotFound();
             if(resume?.Basics?.Location != null){
                 HttpContext.Response.Headers.Add("etag",resume.Basics.Location.Etag);
             }
@@ -82,6 +89,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("work"),HttpHead("work")]
         public IActionResult GetWork()
         {
+            if(resume == null) return NotFound();
             if(resume?.Work != null){
                 HttpContext.Response.Headers.Add("etag",resume.Work.Etag);
             }
@@ -97,6 +105,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("volunteer"),HttpHead("volunteer")]
         public IActionResult GetVolunteer()
         {
+            if(resume == null) return NotFound();
             if(resume?.Volunteer != null){
                 HttpContext.Response.Headers.Add("etag",resume.Volunteer.Etag);
             }
@@ -112,6 +121,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("education"),HttpHead("education")]
         public IActionResult GetEducation()
         {
+            if(resume == null) return NotFound();
             if(resume?.Education != null){
                 HttpContext.Response.Headers.Add("etag",resume.Education.Etag);
             }
@@ -127,6 +137,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("awards"),HttpHead("awards")]
         public IActionResult GetAwards()
         {
+            if(resume == null) return NotFound();
             if(resume?.Awards != null){
                 HttpContext.Response.Headers.Add("etag",resume.Awards.Etag);
             }
@@ -142,6 +153,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("publications"),HttpHead("publications")]
         public IActionResult GetPublications()
         {
+            if(resume == null) return NotFound();
             if(resume?.Publications != null){
                 HttpContext.Response.Headers.Add("etag",resume.Publications.Etag);
             }
@@ -157,6 +169,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("skills"),HttpHead("skills")]
         public IActionResult GetSkills()
         {
+            if(resume == null) return NotFound();
             if(resume?.Skills != null){
                 HttpContext.Response.Headers.Add("etag",resume.Skills.Etag);
             }
@@ -172,6 +185,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("languages"),HttpHead("languages")]
         public IActionResult GetLanguages()
         {
+            if(resume == null) return NotFound();
             if(resume?.Languages != null){
                 HttpContext.Response.Headers.Add("etag",resume.Languages.Etag);
             }
@@ -187,6 +201,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("interests"),HttpHead("interests")]
         public IActionResult GetInterests()
         {
+            if(resume == null) return NotFound();
             if(resume?.Interests != null){
                 HttpContext.Response.Headers.Add("etag",resume.Interests.Etag);
             }
@@ -202,6 +217,7 @@ namespace JSON_Resume.Controllers
         [HttpGet("references"),HttpHead("references")]
         public IActionResult GetReferences()
         {
+            if(resume == null) return NotFound();
             if(resume?.References != null){
                 HttpContext.Response.Headers.Add("etag",resume.References.Etag);
             }

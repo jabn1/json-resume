@@ -50,7 +50,6 @@ namespace JSON_Resume
 
             app.UseRouting();
 
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
