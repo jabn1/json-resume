@@ -121,6 +121,26 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Work);
         }
 
+        [HttpGet("work/{key}"),HttpHead("work/{key}")]
+        public IActionResult GetWorkByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var item = resume.Work.FirstOrDefault(x => x.Company == key);
+            if(item != null){
+                HttpContext.Response.Headers.Add("etag",item.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(item.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(item);
+        }
+
         [HttpGet("volunteer"),HttpHead("volunteer")]
         public IActionResult GetVolunteer()
         {
@@ -137,6 +157,27 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Volunteer);
         }
 
+        [HttpGet("volunteer/{key}"),HttpHead("volunteer/{key}")]
+        public IActionResult GetVolunteerByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var item = resume.Volunteer.FirstOrDefault(x => x.Organization == key);
+            if(item != null){
+                HttpContext.Response.Headers.Add("etag",item.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(item.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(item);
+        }
+
+
         [HttpGet("education"),HttpHead("education")]
         public IActionResult GetEducation()
         {
@@ -151,6 +192,26 @@ namespace JSON_Resume.Controllers
             }
             HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Education);
+        }
+
+        [HttpGet("education/{key}"),HttpHead("education/{key}")]
+        public IActionResult GetEducationByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var item = resume.Education.FirstOrDefault(x => x.Institution == key);
+            if(item != null){
+                HttpContext.Response.Headers.Add("etag",item.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(item.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(item);
         }
 
         [HttpGet("awards"),HttpHead("awards")]
@@ -169,6 +230,26 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Awards);
         }
 
+        [HttpGet("awards/{key}"),HttpHead("awards/{key}")]
+        public IActionResult GetAwardsByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var item = resume.Awards.FirstOrDefault(x => x.Title == key);
+            if(item != null){
+                HttpContext.Response.Headers.Add("etag",item.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(item.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(item);
+        }
+
         [HttpGet("publications"),HttpHead("publications")]
         public IActionResult GetPublications()
         {
@@ -185,6 +266,26 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Publications);
         }
 
+        [HttpGet("publications/{key}"),HttpHead("publications/{key}")]
+        public IActionResult GetPublicationsByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var item = resume.Publications.FirstOrDefault(x => x.Name == key);
+            if(item != null){
+                HttpContext.Response.Headers.Add("etag",item.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(item.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(item);
+        }
+
         [HttpGet("skills"),HttpHead("skills")]
         public IActionResult GetSkills()
         {
@@ -199,6 +300,25 @@ namespace JSON_Resume.Controllers
             }
             HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Skills);
+        }
+        [HttpGet("skills/{key}"),HttpHead("skills/{key}")]
+        public IActionResult GetSkillsByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var item = resume.Skills.FirstOrDefault(x => x.Name == key);
+            if(item != null){
+                HttpContext.Response.Headers.Add("etag",item.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(item.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(item);
         }
 
         [HttpGet("languages"),HttpHead("languages")]
@@ -217,6 +337,26 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Languages);
         }
 
+        [HttpGet("languages/{key}"),HttpHead("languages/{key}")]
+        public IActionResult GetLanguagesByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var item = resume.Languages.FirstOrDefault(x => x.Language == key);
+            if(item != null){
+                HttpContext.Response.Headers.Add("etag",item.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(item.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(item);
+        }
+
         [HttpGet("interests"),HttpHead("interests")]
         public IActionResult GetInterests()
         {
@@ -233,6 +373,26 @@ namespace JSON_Resume.Controllers
             return Ok(resume?.Interests);
         }
 
+        [HttpGet("interests/{key}"),HttpHead("interests/{key}")]
+        public IActionResult GetInterestsByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var item = resume.Interests.FirstOrDefault(x => x.Name == key);
+            if(item != null){
+                HttpContext.Response.Headers.Add("etag",item.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(item.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(item);
+        }
+
         [HttpGet("references"),HttpHead("references")]
         public IActionResult GetReferences()
         {
@@ -247,6 +407,26 @@ namespace JSON_Resume.Controllers
             }
             HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.References);
+        }
+
+        [HttpGet("references/{key}"),HttpHead("references/{key}")]
+        public IActionResult GetReferencesByKey(string key)
+        {
+            if(resume == null) return NotFound();
+            var item = resume.References.FirstOrDefault(x => x.Name == key);
+            if(item != null){
+                HttpContext.Response.Headers.Add("etag",item.Etag);
+            }
+            else{
+                return NotFound();
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(item.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
+            return Ok(item);
         }
 
         [HttpPost]
@@ -710,6 +890,45 @@ namespace JSON_Resume.Controllers
             resume.Work = items;
             return Ok();
         }
+
+        [HttpPut("work/{key}")]
+        public IActionResult PutWorkByKey([FromBody] Work item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Work.FirstOrDefault(x => x.Company == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Work.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.Company = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Work.Etag = Guid.NewGuid().ToString();
+
+            resume.Work[position] = item;
+            return Ok();
+        }
+        
+
         [HttpPut("volunteer")]
         public IActionResult PutVolunteer([FromBody] ResumeList<Volunteer> items)
         {
@@ -741,6 +960,44 @@ namespace JSON_Resume.Controllers
             resume.Volunteer = items;
             return Ok();
         }
+
+        [HttpPut("volunteer/{key}")]
+        public IActionResult PutVolunteerByKey([FromBody] Volunteer item, string key)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+            var oldItem = resume.Volunteer.FirstOrDefault(x => x.Organization == key);
+            
+            if(oldItem == null) return NotFound();
+            var position = resume.Volunteer.IndexOf(oldItem);
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(oldItem.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            item.Organization = key;
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Volunteer.Etag = Guid.NewGuid().ToString();
+
+            resume.Volunteer[position] = item;
+            return Ok();
+        }
+        
         [HttpPut("education")]
         public IActionResult PutEducation([FromBody] ResumeList<Education> items)
         {
