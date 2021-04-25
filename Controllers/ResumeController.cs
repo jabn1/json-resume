@@ -559,6 +559,287 @@ namespace JSON_Resume.Controllers
             resume.Basics = item;
             return Ok();
         }
+
+        [HttpPut("work")]
+        public IActionResult PutWork([FromBody] ResumeList<Work> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Work.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Work = items;
+            return Ok();
+        }
+        [HttpPut("volunteer")]
+        public IActionResult PutVolunteer([FromBody] ResumeList<Volunteer> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Volunteer.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Volunteer = items;
+            return Ok();
+        }
+        [HttpPut("education")]
+        public IActionResult PutEducation([FromBody] ResumeList<Education> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Education.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Education = items;
+            return Ok();
+        }
+        [HttpPut("awards")]
+        public IActionResult PutAwards([FromBody] ResumeList<Award> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Awards.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Awards = items;
+            return Ok();
+        }
+        [HttpPut("publication")]
+        public IActionResult PutPublications([FromBody] ResumeList<Publication> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Publications.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Publications = items;
+            return Ok();
+        }
+        [HttpPut("skills")]
+        public IActionResult PutSkills([FromBody] ResumeList<Skill> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Skills.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Skills = items;
+            return Ok();
+        }
+        [HttpPut("languages")]
+        public IActionResult PutLanguages([FromBody] ResumeList<Languages> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Languages.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Languages = items;
+            return Ok();
+        }
+        [HttpPut("interests")]
+        public IActionResult PutInterests([FromBody] ResumeList<Interest> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Interests.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Interests = items;
+            return Ok();
+        }
+        [HttpPut("references")]
+        public IActionResult PutReferences([FromBody] ResumeList<References> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.References.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.References = items;
+            return Ok();
+        }
+
         private bool Authenticate(string authorization, string username, string password)
         {
             var content = authorization.Split(" ");
