@@ -17,9 +17,9 @@ namespace JSON_Resume.Controllers
         public ResumeList<Skill> Skills { get; set; }
         public ResumeList<Languages> Languages { get; set; }
         public ResumeList<Interest> Interests { get; set; }
-        public ResumeList<References> References { get; set; }
+        public ResumeList<References> References { get; set; } 
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Basics{
         public string Name { get; set; }
@@ -32,7 +32,7 @@ namespace JSON_Resume.Controllers
         public ResumeList<Location> Locations { get; set; }
         public ResumeList<Profile> Profiles { get; set; } 
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Location {
         public string Address { get; set; }
@@ -41,14 +41,14 @@ namespace JSON_Resume.Controllers
         public string CountryCode { get; set; }
         public string Region { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Profile{
         public string Network { get; set; }
         public string Username { get; set; }
         public string Url { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Work{
         public string Company { get; set; }
@@ -59,7 +59,7 @@ namespace JSON_Resume.Controllers
         public string Summary { get; set; }
         public List<string> Highlights { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Volunteer{
         public string Organization { get; set; }
@@ -70,7 +70,7 @@ namespace JSON_Resume.Controllers
         public string Summary { get; set; }
         public List<string> Highlights { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Education{
         public string Institution { get; set; }
@@ -81,7 +81,7 @@ namespace JSON_Resume.Controllers
         public string Gpa { get; set; }
         public List<string> Courses { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Award{
         public string Title { get; set; }
@@ -89,7 +89,7 @@ namespace JSON_Resume.Controllers
         public string Awarder { get; set; }
         public string Summary { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Publication{
         public string Name { get; set; }
@@ -98,35 +98,35 @@ namespace JSON_Resume.Controllers
         public string Website { get; set; }
         public string Summary { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Skill{
         public string Name { get; set; }
         public string Level { get; set; }
         public List<string> Keywords { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Languages{
         public string Language { get; set; }
         public string Fluency { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class Interest{
         public string Name { get; set; }
         public List<string> Keywords { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class References{
         public string Name { get; set; }
         public string Reference { get; set; }
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
     public class ResumeList<T> : List<T> {
         [JsonIgnore]
-        public string Etag { get; set; }
+        public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
 }
