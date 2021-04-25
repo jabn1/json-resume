@@ -276,6 +276,30 @@ namespace JSON_Resume.Controllers
             return Created($"/resume/work/{work.Company}",null);
         }
 
+        [HttpPost("volunteer")]
+        public IActionResult PostVolunteer([FromBody] Volunteer volunteer)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+            if(resume == null){
+                return NotFound();
+            }
+            if(resume.Volunteer.Any(v => v.Organization == volunteer.Organization)){
+                return Conflict();
+            }
+
+            resume.Volunteer.Add(volunteer);
+            return Created($"/resume/work/{volunteer.Organization}",null);
+        }
 
         private bool Authenticate(string authorization, string username, string password)
         {
