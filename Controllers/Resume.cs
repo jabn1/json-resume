@@ -9,15 +9,15 @@ namespace JSON_Resume.Controllers
     public class Resume
     {
         public Basics Basics { get; set; }
-        public ResumeList<Work> Work { get; set; }
-        public ResumeList<Volunteer> Volunteer { get; set; }
-        public ResumeList<Education> Education { get; set; }
-        public ResumeList<Award> Awards { get; set; }
-        public ResumeList<Publication> Publications { get; set; }
-        public ResumeList<Skill> Skills { get; set; }
-        public ResumeList<Languages> Languages { get; set; }
-        public ResumeList<Interest> Interests { get; set; }
-        public ResumeList<References> References { get; set; } 
+        public ResumeList<Work> Work { get; set; } = new ResumeList<Work>();
+        public ResumeList<Volunteer> Volunteer { get; set; } = new ResumeList<Volunteer>();
+        public ResumeList<Education> Education { get; set; } = new ResumeList<Education>();
+        public ResumeList<Award> Awards { get; set; } = new ResumeList<Award>();
+        public ResumeList<Publication> Publications { get; set; } = new ResumeList<Publication>();
+        public ResumeList<Skill> Skills { get; set; } = new ResumeList<Skill>();
+        public ResumeList<Languages> Languages { get; set; } = new ResumeList<Languages>();
+        public ResumeList<Interest> Interests { get; set; } = new ResumeList<Interest>();
+        public ResumeList<References> References { get; set; } = new ResumeList<References>();
         [JsonIgnore]
         public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
@@ -30,7 +30,7 @@ namespace JSON_Resume.Controllers
         public string Website { get; set; }
         public string Summary { get; set; }
         public Location Location { get; set; }
-        public ResumeList<Profile> Profiles { get; set; } 
+        public ResumeList<Profile> Profiles { get; set; } = new ResumeList<Profile>();
         [JsonIgnore]
         public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
@@ -57,7 +57,7 @@ namespace JSON_Resume.Controllers
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public string Summary { get; set; }
-        public List<string> Highlights { get; set; }
+        public List<string> Highlights { get; set; } = new List<string>();
         [JsonIgnore]
         public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
@@ -68,7 +68,7 @@ namespace JSON_Resume.Controllers
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public string Summary { get; set; }
-        public List<string> Highlights { get; set; }
+        public List<string> Highlights { get; set; } = new List<string>();
         [JsonIgnore]
         public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
@@ -79,7 +79,7 @@ namespace JSON_Resume.Controllers
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public string Gpa { get; set; }
-        public List<string> Courses { get; set; }
+        public List<string> Courses { get; set; } = new List<string>();
         [JsonIgnore]
         public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
@@ -103,7 +103,7 @@ namespace JSON_Resume.Controllers
     public class Skill{
         public string Name { get; set; }
         public string Level { get; set; }
-        public List<string> Keywords { get; set; }
+        public List<string> Keywords { get; set; } = new List<string>();
         [JsonIgnore]
         public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
@@ -115,7 +115,7 @@ namespace JSON_Resume.Controllers
     }
     public class Interest{
         public string Name { get; set; }
-        public List<string> Keywords { get; set; }
+        public List<string> Keywords { get; set; } = new List<string>();
         [JsonIgnore]
         public string Etag { get; set; } = Guid.NewGuid().ToString();
     }
