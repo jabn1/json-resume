@@ -30,6 +30,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume);
         }
 
@@ -44,6 +45,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Basics);
         }
 
@@ -58,6 +60,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Basics?.Profiles);
         }
 
@@ -72,6 +75,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Basics?.Location);
         }
 
@@ -86,6 +90,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Work);
         }
 
@@ -100,6 +105,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Volunteer);
         }
 
@@ -114,6 +120,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Education);
         }
 
@@ -128,6 +135,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Awards);
         }
 
@@ -142,6 +150,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Publications);
         }
 
@@ -156,6 +165,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Skills);
         }
 
@@ -170,6 +180,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Languages);
         }
 
@@ -184,6 +195,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.Interests);
         }
 
@@ -198,6 +210,7 @@ namespace JSON_Resume.Controllers
                     return StatusCode(304);
                 }
             }
+            HttpContext.Response.Headers.Add("Cache-Control","no-cache");
             return Ok(resume?.References);
         }
 
