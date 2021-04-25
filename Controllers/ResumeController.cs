@@ -559,6 +559,70 @@ namespace JSON_Resume.Controllers
             resume.Basics = item;
             return Ok();
         }
+        [HttpPut("basics/location")]
+        public IActionResult PutBasicsLocation([FromBody] Location item)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Basics.Location.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Location = item;
+            return Ok();
+        }
+        [HttpPut("basics/profiles")]
+        public IActionResult PutBasicsProfiles([FromBody] ResumeList<Profile> items)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Basics.Profiles.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",items.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Etag = Guid.NewGuid().ToString();
+            resume.Basics.Profiles = items;
+            return Ok();
+        }
 
         [HttpPut("work")]
         public IActionResult PutWork([FromBody] ResumeList<Work> items)
