@@ -527,6 +527,38 @@ namespace JSON_Resume.Controllers
             ResumeController.resume = resume;
             return Ok();
         }
+
+        [HttpPut("basics")]
+        public IActionResult PutBasic([FromBody] Basics item)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(resume.Basics.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+
+            HttpContext.Response.Headers.Add("etag",item.Etag);
+            resume.Etag = Guid.NewGuid().ToString();
+            resume.Basics = item;
+            return Ok();
+        }
         private bool Authenticate(string authorization, string username, string password)
         {
             var content = authorization.Split(" ");
