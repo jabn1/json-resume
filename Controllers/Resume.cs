@@ -29,7 +29,7 @@ namespace JSON_Resume.Controllers
         public string Phone { get; set; }
         public string Website { get; set; }
         public string Summary { get; set; }
-        public ResumeList<Location> Locations { get; set; }
+        public Location Location { get; set; }
         public ResumeList<Profile> Profiles { get; set; } 
         [JsonIgnore]
         public string Etag { get; set; } = Guid.NewGuid().ToString();

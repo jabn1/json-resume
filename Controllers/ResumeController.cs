@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using Microsoft.Extensions.Primitives;
+using System.Text;
+
 namespace JSON_Resume.Controllers
 {
     [ApiController]
@@ -14,6 +16,8 @@ namespace JSON_Resume.Controllers
     public class ResumeController : ControllerBase
     {
         private static Resume resume;
+        private static string username = "myusername";
+        private static string password = "mypassword";
 
         [HttpGet,HttpHead]
         public IActionResult Get()
@@ -47,7 +51,7 @@ namespace JSON_Resume.Controllers
         public IActionResult GetBasicsProfiles()
         {
             if(resume?.Basics?.Profiles != null){
-                HttpContext.Response.Headers.Add("etag",resume.Basics.Etag);
+                HttpContext.Response.Headers.Add("etag",resume.Basics.Profiles.Etag);
             }
             if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
                 if(resume?.Basics?.Profiles?.Etag == etag){
@@ -55,6 +59,20 @@ namespace JSON_Resume.Controllers
                 }
             }
             return Ok(resume?.Basics?.Profiles);
+        }
+
+        [HttpGet("basics/location"),HttpHead("basics/profiles")]
+        public IActionResult GetBasicsLocation()
+        {
+            if(resume?.Basics?.Location != null){
+                HttpContext.Response.Headers.Add("etag",resume.Basics.Location.Etag);
+            }
+            if(HttpContext.Request.Headers.TryGetValue("if-none-match",out StringValues etag)){
+                if(resume?.Basics?.Location?.Etag == etag){
+                    return StatusCode(304);
+                }
+            }
+            return Ok(resume?.Basics?.Location);
         }
 
         [HttpGet("work"),HttpHead("work")]
@@ -186,8 +204,46 @@ namespace JSON_Resume.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Resume resume)
         {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(ResumeController.resume != null ) return Conflict();
+
             ResumeController.resume = resume;
-            return Ok();
+            return Created("/resume",null);
+        }
+
+        private bool Authenticate(string authorization, string username, string password)
+        {
+            var content = authorization.Split(" ");
+            if(content[0] != "Basic") return false;
+            try{
+                var data = Convert.FromBase64String(content[1]);
+                var decodedData = Encoding.UTF8.GetString(data).Split(":"); 
+                if(decodedData[0] == username && decodedData[1] == password) return true;
+            }
+            catch{
+                return false;
+            }
+            return false;
         }
     }
 }
+
+// if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+//                 if(resume.Etag != etag){
+//                     return Conflict();
+//                 }
+//             }
+//             else{
+//                 return Conflict();
+//             }
