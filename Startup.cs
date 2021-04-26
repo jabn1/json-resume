@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using JSON_Resume.Controllers;
-
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 namespace JSON_Resume
 {
@@ -28,8 +28,8 @@ namespace JSON_Resume
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
+            
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "JSON_Resume", Version = "v1" });

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using Microsoft.Extensions.Primitives;
 using System.Text;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace JSON_Resume.Controllers
 {
@@ -724,6 +725,37 @@ namespace JSON_Resume.Controllers
 
             HttpContext.Response.Headers.Add("etag",resume.Etag);
             ResumeController.resume = resume;
+            return Ok();
+        }
+
+        [HttpPatch]
+        public IActionResult Patch([FromBody] JsonPatchDocument<Resume> patchDoc)
+        {
+            if(HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorization))
+            {
+                if(!Authenticate(authorization,username,password)){
+                    return Unauthorized();
+                }
+            }
+            else
+            {
+                HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"Restricted http methods\"");
+                return Unauthorized();
+            }
+
+            if(ResumeController.resume == null ) return NotFound();
+
+            if(HttpContext.Request.Headers.TryGetValue("if-match", out StringValues etag)){
+                if(ResumeController.resume.Etag != etag){
+                    return Conflict();
+                }
+            }
+            else{
+                return Conflict();
+            }
+            patchDoc.ApplyTo(resume);
+            HttpContext.Response.Headers.Add("etag",resume.Etag);
+            
             return Ok();
         }
 
